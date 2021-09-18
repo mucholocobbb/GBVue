@@ -2,19 +2,30 @@
   <div id="app">
     <img class="logo" alt="Vue logo" src="./assets/logo.png" />
     <Calculator msg="Calculator from first Lesson." />
-    <SoundBtn text="This is sound Button" />
+    <button class="superCalc" @click="getSoundBtn">Show Sound Button</button>
+    <SoundBtn v-if="showSoundBtn" text="This is sound Button" />
   </div>
 </template>
 
 <script>
 import Calculator from "./components/Calculator.vue";
-import SoundBtn from "./components/myComp.vue";
+import SoundBtn from "./components/SoundBtn.vue";
 
 export default {
   name: "App",
   components: {
     Calculator,
     SoundBtn
+  },
+  data() {
+    return {
+      showSoundBtn: false
+    }
+  },
+  methods: {
+    getSoundBtn(){
+      this.showSoundBtn = !this.showSoundBtn
+    }
   },
 };
 </script>

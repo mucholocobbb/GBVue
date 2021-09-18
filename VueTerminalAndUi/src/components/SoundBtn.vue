@@ -1,7 +1,6 @@
 <template>
     <div class="soundBtn">
         <h1>{{ text }}</h1>
-        <h3>{{ sound }}</h3>
         <button class="btnS" @click="pushTheButton">PUSH ME</button>
     </div>
 </template>
@@ -19,8 +18,7 @@ export default {
   },
   methods: {
       pushTheButton(){
-          //К сожалению не зафиналил результат. Никак не смог нащупать путь к файлу. Причем,когда я переложил sound.mp3 из assets в components срабатывал вариант,который оставлен. Звук был. Но когда пошел искать путь до папки assets , все сломалось. Возможно есть какая то особенность в дирректориях с Вью. Если есть мысли,буду рад .
-        let mySound = new Audio('sound.mp3')
+        let mySound = new Audio('../sound.mp3')
         mySound.play()
         this.sound = 'Piiiuuu....'
 

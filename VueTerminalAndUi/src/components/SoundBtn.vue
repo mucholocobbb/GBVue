@@ -1,7 +1,7 @@
 <template>
-    <div class="soundBtn">
+    <div class="mainitem__style">
         <h1>{{ text }}</h1>
-        <button class="btnS" @click="pushTheButton">PUSH ME</button>
+        <button class="soundbtn__style" @click="pushTheButton">PUSH ME</button>
     </div>
 </template>
 <script>
@@ -10,25 +10,17 @@ export default {
     props:{
     text: String,
   },
-  data() {
-      return {
-          sound: '',
-
-      }
-  },
   methods: {
       pushTheButton(){
         let mySound = new Audio('../sound.mp3')
         mySound.play()
-        this.sound = 'Piiiuuu....'
-
       }
   }
 }
 </script>
 
 <style lang="sass">
-    .btnS
+    .soundbtn__style
        width: 150px
        height: 150px
        background: #ffffff
@@ -41,7 +33,6 @@ export default {
        box-shadow: 0 0 15px -5px black
        transition: all 0.1s
        &:active
-            box-shadow: 0 0 20px -5px black
-
-
+            transform: scale(1.1)
+            background: #eb676794
 </style>

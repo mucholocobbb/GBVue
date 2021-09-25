@@ -6,7 +6,7 @@
     </div>
 
     <Calculator v-show="buttonsArray[0].show" msg="Calculator from first Lesson."/>
-    <SoundBtn v-show="buttonsArray[1].show" text="This is sound Button"/>
+    <SoundBtn v-show="buttonsArray[1].show" text="This is sound Button."/>
     <MoneyApp v-show="buttonsArray[2].show" msg="Where you Money?"/>
 
     
@@ -27,7 +27,7 @@ export default {
       buttonsArray: [{
         name: 'Calculator',
         id: 0,
-        show: true,
+        show: false,
       },
       {
         name: 'Sound Button',
@@ -37,7 +37,7 @@ export default {
       {
         name: 'Money Notes',
         id: 2,
-        show: false,
+        show: true,
       }
       ]
     }
@@ -101,6 +101,7 @@ export default {
   margin-left: 100px
 
 .mainbtn__style 
+  color: #fff
   position: relative
   border: 1px solid #000
   height: 24px
@@ -108,9 +109,10 @@ export default {
   border-bottom-left-radius: 0
   border-top-left-radius: 5px
   border-top-right-radius: 5px
-  background: rgb(238, 236, 236)
+  background: #61e3a9
 
 .mainbtn__active 
+  color: #000
   background: #fff
   border-bottom: 0
   z-index: 1

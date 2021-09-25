@@ -23,7 +23,7 @@ export default {
     .soundbtn__style
        width: 150px
        height: 150px
-       background: #ffffff
+       background: #99edc8
        outline: none
        border: 1px solid #000
        border-radius: 50%

@@ -158,7 +158,7 @@ export default {
       width: 40px
       height: 40px
       margin: 0 4px
-      color: green
+      color: #00b061
       font-size: 20px
   
   .itemcbox__style 

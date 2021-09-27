@@ -15,7 +15,6 @@
                 <label class="money__addform_labels" for="price"> How much?</label>
                 <input class="money__addform_inputs" type="number" id="price" v-model="price" placeholder="Rub." required>
             </div>
-            <li v-for="n in evenNumbers" :key="n">{{ n }}</li>
 
             <button class="money__addform_btn" @submit.prevent  @click="addItem">ADD +</button>
         </form>
@@ -27,7 +26,6 @@ export default {
     name: "AddForm",
     data() {
         return {
-            numbers: [ 1, 2, 3, 4, 5 ],
             dateInp: '',
             selected: '',
             price: '',
@@ -41,14 +39,12 @@ export default {
             ],
         }
     },
-    computed: {
-  evenNumbers: function () {
-    return this.numbers.filter(function (number) {
-      return number % 2 === 0
-    })
-  }
-},
     methods: {
+        /**
+         * Вызываем функцию  replaceDate которая форматирует полученную дату.
+         * Доп валидация,чтобы не остались пустые поля
+         * Вызываем метод  ,который соберет обьект с полученными данными и отправит его в родительский компонент
+         */
         addItem() {
             let newString =  this.replaceDate()
             if (this.dateInp !== '' && this.selected !== '' && this.price !== '') {

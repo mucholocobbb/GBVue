@@ -9,13 +9,24 @@
 <script>
 export default {
     name: "Pagination",
+    /**
+     * arrQuantity - длинна Ключевого массива, по ней отрисовываем количество страниц.
+     */
     props: ["arrQuantity"],
+    /**
+     * pageQuantity - переменная,на которой завязаны и стили и значение актуальной страницы. 
+     */
     data() {
         return {
             pageQuantity: 1,
+            
         }
     },
     methods: {
+        /**
+         * - Очищает все стили  всех элементов в нажатом блоке.
+         * - Актуализирует переменную  pageQuantity и отправляет ее родителю
+         */
         setPages (event) {
             event.target.parentNode.childNodes.forEach(element => {
                 element.classList.remove('activeBtn')
@@ -23,36 +34,63 @@ export default {
             this.pageQuantity = +event.target.innerText
             this.$emit('pagNum',this.pageQuantity)
         },
+        /**
+         * - Метод переключения страницы стрелкой вправо
+         * - Актуализирует переменную  pageQuantity и отправляет ее родителю
+         */
         nextPage() {
             if(this.pageQuantity < this.setPagesComputed) {
                 this.pageQuantity++
                 this.$emit('pagNum',this.pageQuantity)
             }
         },
+        /**
+         * - Метод переключения страницы стрелкой влево
+         * - Актуализирует переменную  pageQuantity и отправляет ее родителю
+         */
         prevPage() {
             if(this.pageQuantity > 1) {
                 this.pageQuantity--
                 this.$emit('pagNum',this.pageQuantity)
             }
+        },
+        /**
+         * Метод вызывается из родительского компонента, при добавлении нового элемента - переключает стиль на знак последней страницы
+         */
+        setPagefromParent() {
+            this.pageQuantity = this.setPagesComputed
         }
 
     },
+    /**
+     * Постоянно считает количество страниц, делит длинну массива на желаемое количество отображаемых элементов и округляет в большую сторону
+     */
     computed: {
         setPagesComputed () {
             return  Math.ceil((this.arrQuantity / 5))
         },
 
     },
+    /**
+     *  При загрузке страницы,включает последнюю
+     */
     mounted: function () {
-        
-    }
+        this.pageQuantity = this.setPagesComputed
+        this.$emit('pagNum',this.pageQuantity)
+
+    },
+    /**
+     * Отправляет родителю информацию о количестве страниц при каждои обновлении состояния
+     */
+    updated: function () {
+        this.$emit('lastNum',this.setPagesComputed)
+    },
+
+
 }
 </script>
 
 <style lang="sass">
-    .activeBtn
-        color: gray
-        font-weight: 800
     .money
         &__pagination
             margin: 16px
@@ -67,7 +105,9 @@ export default {
                     color: red
                     font-weight: 800
                 &:active
-                    color: gray
-
+                    color: #8097ed
+    .activeBtn
+        color: #8097ed
+        font-weight: 800
 
 </style>

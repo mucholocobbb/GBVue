@@ -4,7 +4,7 @@
     <div class="mainbtn__block">
       <button class="mainbtn__style" v-bind:class="{mainbtn__active: item.show}" @click="checkItem($event)" v-for="item of buttonsArray" :key="item.id">{{ item.name }}</button>
     </div>
-
+    <!-- <h1>Нашел интересное решение переключения между компонентами:https://codesandbox.io/s/github/vuejs/vuejs.org/tree/master/src/v2/examples/vue-20-dynamic-components </h1> -->
     <Calculator v-show="buttonsArray[0].show" msg="Calculator from first Lesson."/>
     <SoundBtn v-show="buttonsArray[1].show" text="This is sound Button."/>
     <MoneyApp v-show="buttonsArray[2].show" msg="Where you Money?"/>

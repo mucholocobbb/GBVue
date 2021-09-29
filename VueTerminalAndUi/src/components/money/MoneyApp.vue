@@ -1,10 +1,11 @@
 <template>
     <div class="mainitem__style money__mainblock">
         <h1>{{ msg }}</h1>
-        <HistoryList @delItemToForm="delItemFromArr" :histList="operationList" :changedPage="changedPage" :lastPage="lastPage"/>
-        <Pagination @pagNum="changeList" @lastNum="changeLastList" :arrQuantity="operationList.length" ref="changeLastPage"/>
+        <HistoryList @delItemToForm="delItemFromArr" :histList="getCostList" :changedPage="changedPage" :lastPage="lastPage"/>
+        <Pagination @pagNum="changeList" @lastNum="changeLastList" :arrQuantity="getCostList.length" ref="changeLastPage"/>
         <button class="money__addformbtn" @click="openForm">NEW COST <span class="money__addformbtn_bigsymbol">{{ showSymbol }}</span></button>
         <AddForm @addItemToForm="updateArray" v-show="showForm"/>
+        {{operationList}}
     </div>
 </template>
 
@@ -12,6 +13,7 @@
 import HistoryList from "./HistoryList.vue"
 import AddForm from "./AddForm.vue"
 import Pagination from "./Pagination.vue"
+import { mapActions, mapGetters} from "vuex"
 
 export default {
     name: "MoneyApp",
@@ -27,53 +29,55 @@ export default {
             showSymbol: '+',
             changedPage: 1,
             lastPage: 1,
-            operationList: [
-                {
-                    id: '1',
-                    date: '01.07.2021',
-                    cat: 'Food',
-                    value: '415'
-                },
-                {
-                    id: '2',
-                    date: '05.08.2021',
-                    cat: 'Transport',
-                    value: '50'
-                },
-                {
-                    id: '3',
-                    date: '24.09.2021',
-                    cat: 'Health',
-                    value: '189'
-                },
-                {
-                    id: '4',
-                    date: '25.09.2021',
-                    cat: 'Food',
-                    value: '234'
-                },
-                {
-                    id: '5',
-                    date: '25.09.2021',
-                    cat: 'Transport',
-                    value: '48'
-                },
-                {
-                    id: '6',
-                    date: '26.09.2021',
-                    cat: 'Health',
-                    value: '1600'
-                },
-                {
-                    id: '7',
-                    date: '27.09.2021',
-                    cat: 'Transport',
-                    value: '140'
-                }
-            ]
+            operationList:[]
+            // operationList: [
+            //     {
+            //         id: '1',
+            //         date: '01.07.2021',
+            //         cat: 'Food',
+            //         value: '415'
+            //     },
+            //     {
+            //         id: '2',
+            //         date: '05.08.2021',
+            //         cat: 'Transport',
+            //         value: '50'
+            //     },
+            //     {
+            //         id: '3',
+            //         date: '24.09.2021',
+            //         cat: 'Health',
+            //         value: '189'
+            //     },
+            //     {
+            //         id: '4',
+            //         date: '25.09.2021',
+            //         cat: 'Food',
+            //         value: '234'
+            //     },
+            //     {
+            //         id: '5',
+            //         date: '25.09.2021',
+            //         cat: 'Transport',
+            //         value: '48'
+            //     },
+            //     {
+            //         id: '6',
+            //         date: '26.09.2021',
+            //         cat: 'Health',
+            //         value: '1600'
+            //     },
+            //     {
+            //         id: '7',
+            //         date: '27.09.2021',
+            //         cat: 'Transport',
+            //         value: '140'
+            //     }
+            // ]
         }
     },
     methods: {
+        ...mapActions(['fetchCosts','fetchCategory']),
         /**
          * changeList принимает номер выбранной страницы в комплненте Pagination.vue  , записывает номер в переменную this.changedPage, которая передает это значение в компонент HistoryList.vue
          */
@@ -138,6 +142,20 @@ export default {
             });
         }
     },
+    computed: {
+        ...mapGetters(['getCostList'])
+    },
+
+    created() {
+        this.fetchCategory()
+        this.fetchCosts()
+        this.operationList = this.getCostList
+
+    },
+    // updated() {
+    //     this.operationList = this.getCostList
+    // },
+
 
 }
 </script>

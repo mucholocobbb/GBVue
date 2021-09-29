@@ -51,8 +51,7 @@ export default {
             return this.histList.filter(function (number) {
                     if(changeP === 1) {
                         return  number.id > min && number.id <= max 
-                    }
-                     else if ( changeP === 2) {
+                    } else if ( changeP === 2) {
                         return  number.id > 5 && number.id <= 10 
                     }else if ( changeP === 3) {
                         return  number.id > 10 && number.id <= 15 

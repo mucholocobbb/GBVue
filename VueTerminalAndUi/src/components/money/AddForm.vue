@@ -1,5 +1,17 @@
 <template>
     <div class="money__addform">
+        <div class="money__setform" v-if="hiddenAddBlock">
+            <h3 class="money__setform_headtext">Setting Category</h3>
+            <div class="money__setform_itemblock" v-for="item in options" :key="item.id" >
+                <p class="money__setform_itemname">{{ item.text }}</p>
+                <button class="money__setform_itembtn">&#10006;</button>
+            </div>
+            <div class="money__setform_itemblock">
+                <input class="money__setform_input" type="text" placeholder="New category..." minlength="2" maxlength="12">
+                <button class="money__setform_itembtn money__setform_itemaddbtn">&#10010;</button>
+            </div>
+
+        </div>
         <form class="money__addform_form" action="#" @submit.prevent>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="date">When?</label>
@@ -7,9 +19,10 @@
             </div>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="cat"> What?</label>
-                <select class="money__addform_inputs" name="cat" id="cat" v-model="selected" required>
-                <option  v-for="option in options" :key="option.id"  :value="option.text">{{ option.text }}</option>
+                <select class="money__addform_inputs money__addform_select" name="cat" id="cat" v-model="selected" required>
+                <option v-for="option in options" :key="option.id"  :value="option.text">{{ option.text }}</option>
                 </select>
+                <button class="money__addform_setbtn" @click.prevent="hiddenAddBlock = !hiddenAddBlock"><i class="fas fa-cog"></i></button>
             </div>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="price"> How much?</label>
@@ -26,6 +39,7 @@ export default {
     name: "AddForm",
     data() {
         return {
+            hiddenAddBlock: false,
             dateInp: '',
             selected: '',
             price: '',
@@ -74,7 +88,65 @@ export default {
 
 <style lang="sass">
 .money
+    &__setform
+        position: absolute
+        background: #ffffff
+        box-sizing: border-box
+        border: 1px solid #41b883
+        border-radius: 5px
+        padding: 16px
+        display: flex
+        flex-direction: column
+        right: -188px
+        top: -152px
+        &_headtext
+            align-self: center
+            margin-block-start: 4px
+            margin-block-end: 4px
+        &_itemblock
+            display: flex
+            justify-content: space-between    
+            height: 24px
+            padding: 4px
+            transition: all 0.2s
+            &:hover
+                background: #edcfcf70
+                border-radius: 5px
+        &_itemname
+            margin-block-start: 0
+            margin-block-end: 0
+        &_itembtn
+            background: white
+            border: 1px solid #f4004dad
+            color: #f4004dad
+            border-radius: 5px
+            transition: all 0.2s
+            &:hover
+                background: #f651518a
+                color: white
+            &:active
+                box-shadow: 0 0 5px 0 #c43b3b
+                background: #d39f9f
+        &_input
+            width: 100px
+            background: white
+            border: 1px solid #41b883
+            border-radius: 5px
+            margin: 0 4px
+            padding: 0 4px
+            outline: none
+            color: gray
+            &:focus
+                background: #61e3a947
+        &_itemaddbtn
+            &:hover
+                background: #41b8837a
+                color: white
+            &:active
+                box-shadow: 0 0 5px 0 #41b883
+                background: #41b883
     &__addform
+        position: relative
         margin: 16px
         display: flex
         flex-direction: column
@@ -97,6 +169,21 @@ export default {
             outline: none
             padding-left: 6px
             padding-right: 6px
+        &_setbtn
+            box-sizing: border-box
+            height: 28px
+            width: 28px
+            background: white
+            border: 1px solid #41b883
+            border-radius: 5px
+            color: #41b883
+            font-size: 15px
+            text-align: center
+            line-height: 15px
+        &_select
+            width: 222px
+
+ 
         &_labels
             color: #41b883
             align-self: flex-start

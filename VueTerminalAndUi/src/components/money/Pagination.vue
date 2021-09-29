@@ -7,15 +7,10 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations} from "vuex"
+
 export default {
     name: "Pagination",
-    /**
-     * arrQuantity - длинна Ключевого массива, по ней отрисовываем количество страниц.
-     */
-    props: ["arrQuantity"],
-    /**
-     * pageQuantity - переменная,на которой завязаны и стили и значение актуальной страницы. 
-     */
     data() {
         return {
             pageQuantity: 1,
@@ -23,67 +18,42 @@ export default {
         }
     },
     methods: {
-        /**
-         * - Очищает все стили  всех элементов в нажатом блоке.
-         * - Актуализирует переменную  pageQuantity и отправляет ее родителю
-         */
+        ...mapMutations(['actualPagePlus','actualPageMinus','actualPageChange','setLastPage']),
         setPages (event) {
-            event.target.parentNode.childNodes.forEach(element => {
-                element.classList.remove('activeBtn')
-            });
             this.pageQuantity = +event.target.innerText
-            this.$emit('pagNum',this.pageQuantity)
+            this.$store.commit('actualPageChange',this.pageQuantity)
         },
-        /**
-         * - Метод переключения страницы стрелкой вправо
-         * - Актуализирует переменную  pageQuantity и отправляет ее родителю
-         */
+
         nextPage() {
-            if(this.pageQuantity < this.setPagesComputed) {
-                this.pageQuantity++
-                this.$emit('pagNum',this.pageQuantity)
+            if(this.actualPage < this.setPagesComputed) {
+                this.$store.commit('actualPagePlus')
             }
+            this.pageQuantity = this.actualPage
         },
-        /**
-         * - Метод переключения страницы стрелкой влево
-         * - Актуализирует переменную  pageQuantity и отправляет ее родителю
-         */
+
         prevPage() {
-            if(this.pageQuantity > 1) {
-                this.pageQuantity--
-                this.$emit('pagNum',this.pageQuantity)
+            if(this.actualPage > 1) {
+                this.$store.commit('actualPageMinus')
             }
+            this.pageQuantity = this.actualPage
+
         },
-        /**
-         * Метод вызывается из родительского компонента, при добавлении нового элемента - переключает стиль на знак последней страницы
-         */
-        setPagefromParent() {
-            this.pageQuantity = this.setPagesComputed
-        }
 
     },
-    /**
-     * Постоянно считает количество страниц, делит длинну массива на желаемое количество отображаемых элементов и округляет в большую сторону
-     */
+
     computed: {
+        ...mapGetters(['actualPage','getCostList','lastPage']),
         setPagesComputed () {
-            return  Math.ceil((this.arrQuantity / 5))
+            return  Math.ceil((this.getCostList.length / 5))
         },
 
     },
-    /**
-     *  При загрузке страницы,включает последнюю
-     */
-    mounted: function () {
-        this.pageQuantity = this.setPagesComputed
-        this.$emit('pagNum',this.pageQuantity)
+        //Здесь все работает при сохранении проета, но не работает при обновлении страницы и при первом запуске. Почему то computed свойство  getCostList при перезагрузке возвращает 0. 
 
-    },
-    /**
-     * Отправляет родителю информацию о количестве страниц при каждои обновлении состояния
-     */
-    updated: function () {
-        this.$emit('lastNum',this.setPagesComputed)
+
+    updated() {
+        this.$store.commit('setLastPage', Math.ceil((this.getCostList.length / 5)))
+        this.pageQuantity = this.actualPage
     },
 
 

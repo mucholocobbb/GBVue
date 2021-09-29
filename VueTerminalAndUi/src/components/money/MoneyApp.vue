@@ -1,11 +1,10 @@
 <template>
     <div class="mainitem__style money__mainblock">
         <h1>{{ msg }}</h1>
-        <HistoryList @delItemToForm="delItemFromArr" :histList="getCostList" :changedPage="changedPage" :lastPage="lastPage"/>
-        <Pagination @pagNum="changeList" @lastNum="changeLastList" :arrQuantity="getCostList.length" ref="changeLastPage"/>
+        <HistoryList/>
+        <Pagination/>
         <button class="money__addformbtn" @click="openForm">NEW COST <span class="money__addformbtn_bigsymbol">{{ showSymbol }}</span></button>
-        <AddForm @addItemToForm="updateArray" v-show="showForm"/>
-        {{operationList}}
+        <AddForm  v-show="showForm"/>
     </div>
 </template>
 
@@ -13,7 +12,7 @@
 import HistoryList from "./HistoryList.vue"
 import AddForm from "./AddForm.vue"
 import Pagination from "./Pagination.vue"
-import { mapActions, mapGetters} from "vuex"
+import { mapActions, mapGetters, mapMutations} from "vuex"
 
 export default {
     name: "MoneyApp",
@@ -27,70 +26,13 @@ export default {
         return {
             showForm: false,
             showSymbol: '+',
-            changedPage: 1,
-            lastPage: 1,
-            operationList:[]
-            // operationList: [
-            //     {
-            //         id: '1',
-            //         date: '01.07.2021',
-            //         cat: 'Food',
-            //         value: '415'
-            //     },
-            //     {
-            //         id: '2',
-            //         date: '05.08.2021',
-            //         cat: 'Transport',
-            //         value: '50'
-            //     },
-            //     {
-            //         id: '3',
-            //         date: '24.09.2021',
-            //         cat: 'Health',
-            //         value: '189'
-            //     },
-            //     {
-            //         id: '4',
-            //         date: '25.09.2021',
-            //         cat: 'Food',
-            //         value: '234'
-            //     },
-            //     {
-            //         id: '5',
-            //         date: '25.09.2021',
-            //         cat: 'Transport',
-            //         value: '48'
-            //     },
-            //     {
-            //         id: '6',
-            //         date: '26.09.2021',
-            //         cat: 'Health',
-            //         value: '1600'
-            //     },
-            //     {
-            //         id: '7',
-            //         date: '27.09.2021',
-            //         cat: 'Transport',
-            //         value: '140'
-            //     }
-            // ]
+
         }
     },
     methods: {
         ...mapActions(['fetchCosts','fetchCategory']),
-        /**
-         * changeList принимает номер выбранной страницы в комплненте Pagination.vue  , записывает номер в переменную this.changedPage, которая передает это значение в компонент HistoryList.vue
-         */
-        changeList(num){
-            this.changedPage = num;
-        },
-        /**
-         * changeLastList принимает количество страниц  из комплнента Pagination.vue  , записывает номер в переменную this.lastPage, которая передает это значение в компонент HistoryList.vue
-         */
-        changeLastList(num) {
-            this.lastPage = num
-        },
-        /** Функция управляет открытием формы добавления платежа */
+        ...mapMutations(['']),
+
         openForm() {
             this.showForm = !this.showForm
             if(this.showSymbol === '+') {
@@ -99,48 +41,10 @@ export default {
                 this.showSymbol = '+'
             }
         },
-        /** updateId перебирает ключевой массив при добавлении или удалении элемента и обновляет id каждого элемента , последовательно. */
-        updateId(){
-            for(let i = 0; i < this.operationList.length; i++) {
+        // - При обновлении или загрузке - переключается на последнюю страницу
+        // - Доделать!
 
-                this.operationList[i].id = `${i+1}`
-            }
-        },
 
-        /**-Принимает элемент из компонента addForm.vue
-         * -Добавляет элемент в конец ключевого массива
-         * -Обновляет все id  методом updateID()
-         * this.lastPage - перелистывает на последнюю страницу при добавлении элемента,для отслеживания этого
-         * this.$refs.changeLastPage.setPagefromParent() вызывает этот метод для стилизации символа последней страницы.
-         * Методы обернуты в таймер ,для того ,чтобы родительская функция успела полностью отработать.
-         */
-        updateArray(el) {
-            setTimeout(() => {
-                this.changedPage = this.lastPage
-                this.$refs.changeLastPage.setPagefromParent()
-            }, 100);
-
-            let newItem = {
-                id: '',
-                date: el.date,
-                cat: el.cat,
-                value: el.price
-            }
-            
-            this.operationList.push(newItem)
-            this.updateId()
-        },
-        /**
-         * Получает данные нажатой кнопки удаления,перебирая ключевой массив ищет совпадения по айди и удаляет совпавший элемент.
-         */
-        delItemFromArr(el) {
-            this.operationList.forEach(element => {
-                if(el == element.id) {
-                    this.operationList.splice(element.id - 1, 1)
-                }
-                this.updateId()
-            });
-        }
     },
     computed: {
         ...mapGetters(['getCostList'])
@@ -148,13 +52,9 @@ export default {
 
     created() {
         this.fetchCategory()
-        this.fetchCosts()
-        this.operationList = this.getCostList
-
+        this.fetchCosts()   
     },
-    // updated() {
-    //     this.operationList = this.getCostList
-    // },
+
 
 
 }

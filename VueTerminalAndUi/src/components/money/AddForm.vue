@@ -1,17 +1,6 @@
 <template>
-    <div class="money__addform">
-        <div class="money__setform" v-if="hiddenAddBlock">
-            <h3 class="money__setform_headtext">Setting Category</h3>
-            <div class="money__setform_itemblock" v-for="item in options" :key="item.id" >
-                <p class="money__setform_itemname">{{ item.text }}</p>
-                <button class="money__setform_itembtn">&#10006;</button>
-            </div>
-            <div class="money__setform_itemblock">
-                <input class="money__setform_input" type="text" placeholder="New category..." minlength="2" maxlength="12">
-                <button class="money__setform_itembtn money__setform_itemaddbtn">&#10010;</button>
-            </div>
-
-        </div>
+    <div class="money__addform" >
+        <SetCategory v-if="hiddenAddBlock"/>
         <form class="money__addform_form" action="#" @submit.prevent>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="date">When?</label>
@@ -20,7 +9,7 @@
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="cat"> What?</label>
                 <select class="money__addform_inputs money__addform_select" name="cat" id="cat" v-model="selected" required>
-                <option v-for="option in options" :key="option.id"  :value="option.text">{{ option.text }}</option>
+                <option v-for="option in getCatList" :key="option.id"  :value="option.text">{{ option.text }}</option>
                 </select>
                 <button class="money__addform_setbtn" @click.prevent="hiddenAddBlock = !hiddenAddBlock"><i class="fas fa-cog"></i></button>
             </div>
@@ -35,44 +24,44 @@
 </template>
 
 <script>
+import SetCategory from "./SetCategory.vue"
+
+import {mapMutations,mapGetters} from "vuex"
+
 export default {
     name: "AddForm",
+    components: {
+        SetCategory
+    },
     data() {
         return {
             hiddenAddBlock: false,
             dateInp: '',
             selected: '',
             price: '',
-            options: [
-                { text: 'Food', id: '1' },
-                { text: 'Clothing', id: '2' },
-                { text: 'House', id: '3' },
-                { text: 'Food', id: '4' },
-                { text: 'Health', id: '5' },
-                { text: 'Transport', id: '6' }
-            ],
         }
     },
     methods: {
-        /**
-         * Вызываем функцию  replaceDate которая форматирует полученную дату.
-         * Доп валидация,чтобы не остались пустые поля
-         * Вызываем метод  ,который соберет обьект с полученными данными и отправит его в родительский компонент
-         */
+        ...mapMutations(['setAddCostItem','updateCostId','actualPageChange']),
+
         addItem() {
             let newString =  this.replaceDate()
             if (this.dateInp !== '' && this.selected !== '' && this.price !== '') {
                 this.sendToParent(newString)
             }
-            
         },
         sendToParent(newDate){
             let newItem = {
+                id: '',
                 date: newDate,
                 cat: this.selected,
-                price: this.price
+                value: this.price
             }
-            this.$emit('addItemToForm',newItem)
+            this.$store.commit('setAddCostItem',newItem)
+            this.$store.commit('updateCostId')
+            setTimeout(() => {
+                this.$store.commit('actualPageChange',this.lastPage)
+            }, 10);
         },
         replaceDate() {
             let re = /-/gi
@@ -80,8 +69,13 @@ export default {
             let re2 = /(\d+).(\d+).(\d+)/gi
             let newStr2 = newStr.replace(re2, '$3.$2.$1')
             return newStr2
-        }
+        },
+
     },
+    computed: {
+        ...mapGetters(['getCatList','lastPage'])    
+    },
+
     
 }
 </script>

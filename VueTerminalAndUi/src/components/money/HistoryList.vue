@@ -20,76 +20,59 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations} from "vuex"
+
 export default {
     name: "HistoryList",
-    props:["histList","changedPage","lastPage"],
-    data() {
-        return {
-            arr: [],
-        }
-    },
     methods: {
-        /**
-         * Метод принимает data-id нажатой кнопки и отправляет его в родительский компонент,где из ключевого массива будет удален соответствующий элемент
-         */
+        ...mapMutations(['delCostItem','updateCostId']),
         delItem(event) {
             let delItem =  event.target.getAttribute("data-id")
-            this.$emit('delItemToForm',delItem)
+            console.log(delItem);
+            this.$store.commit('delCostItem',delItem)
+            this.$store.commit('updateCostId')
+            //При удалении всех элементов со страницы ,не переключается на предидущую
         },
 
     },
     computed: {
-        /**
-         *Computed свойство- перебирает полученный массив и постоянно актуализирует его,согласно условиям
-         */
+        ...mapGetters(['getCostList','actualPage']),   
         setArrRange () {
-            let changeP = this.changedPage
-            // let arr = this.arr
-            let min = 0
-            let max = 5
-            // Здесь разобраться ,как связать динамически - количество страниц и  количество условных итерраций.
-            return this.histList.filter(function (number) {
+            let changeP = this.actualPage
+
+            // Здесь разобраться ,как связать динамически - количество страниц и  количество условных итерраций. Разбивать массив на страницы,как в методичке- кажется плохой затеей. Как минимум такой же плохо масштабируемой ,как и моя
+
+
+            return this.getCostList.filter(function (number) {
                     if(changeP === 1) {
-                        return  number.id > min && number.id <= max 
+                        return  number.id > 0 && number.id <= 5 
                     } else if ( changeP === 2) {
                         return  number.id > 5 && number.id <= 10 
                     }else if ( changeP === 3) {
                         return  number.id > 10 && number.id <= 15 
                     }else if ( changeP === 4) {
                         return  number.id > 15 && number.id <= 20 
-                    }
-                    else if ( changeP === 5) {
+                    }else if ( changeP === 5) {
                         return  number.id > 20 && number.id <= 25 
-                    }
-                    else if ( changeP === 6) {
+                    }else if ( changeP === 6) {
                         return  number.id > 25 && number.id <= 30 
-                    }
-                    else if ( changeP === 7) {
+                    }else if ( changeP === 7) {
                         return  number.id > 35 && number.id <= 40 
-                    }
-                    else if ( changeP === 8) {
+                    }else if ( changeP === 8) {
                         return  number.id > 45 && number.id <= 50 
+                    }else if ( changeP === 9) {
+                        return  number.id > 55 && number.id <= 60 
+                    }else if ( changeP === 10) {
+                        return  number.id > 65 && number.id <= 70 
                     }
             })
-            
-            
-
-        }
-
-    },
-    mounted: function () {    
-        for (let i = 1; i <= this.lastPage; i++) {
-            this.arr.push(i)
-        }
-        
+            }
     },
 }
 </script>
 
 <style lang="sass">
 .money
-    &__listblock
-    background: lightgrey
     &__listheader
         color: black
         font-size: 14px

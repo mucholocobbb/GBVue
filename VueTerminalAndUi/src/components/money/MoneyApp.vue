@@ -29,58 +29,54 @@ export default {
             showSymbol: '+',
             changedPage: 1,
             lastPage: 1,
-            operationList:[]
-            // operationList: [
-            //     {
-            //         id: '1',
-            //         date: '01.07.2021',
-            //         cat: 'Food',
-            //         value: '415'
-            //     },
-            //     {
-            //         id: '2',
-            //         date: '05.08.2021',
-            //         cat: 'Transport',
-            //         value: '50'
-            //     },
-            //     {
-            //         id: '3',
-            //         date: '24.09.2021',
-            //         cat: 'Health',
-            //         value: '189'
-            //     },
-            //     {
-            //         id: '4',
-            //         date: '25.09.2021',
-            //         cat: 'Food',
-            //         value: '234'
-            //     },
-            //     {
-            //         id: '5',
-            //         date: '25.09.2021',
-            //         cat: 'Transport',
-            //         value: '48'
-            //     },
-            //     {
-            //         id: '6',
-            //         date: '26.09.2021',
-            //         cat: 'Health',
-            //         value: '1600'
-            //     },
-            //     {
-            //         id: '7',
-            //         date: '27.09.2021',
-            //         cat: 'Transport',
-            //         value: '140'
-            //     }
-            // ]
+            operationList: [
+                {
+                    id: '1',
+                    date: '01.07.2021',
+                    cat: 'Food',
+                    value: '415'
+                },
+                {
+                    id: '2',
+                    date: '05.08.2021',
+                    cat: 'Transport',
+                    value: '50'
+                },
+                {
+                    id: '3',
+                    date: '24.09.2021',
+                    cat: 'Health',
+                    value: '189'
+                },
+                {
+                    id: '4',
+                    date: '25.09.2021',
+                    cat: 'Food',
+                    value: '234'
+                },
+                {
+                    id: '5',
+                    date: '25.09.2021',
+                    cat: 'Transport',
+                    value: '48'
+                },
+                {
+                    id: '6',
+                    date: '26.09.2021',
+                    cat: 'Health',
+                    value: '1600'
+                },
+                {
+                    id: '7',
+                    date: '27.09.2021',
+                    cat: 'Transport',
+                    value: '140'
+                }
+            ]
         }
     },
     methods: {
-        ...mapActions(['fetchCosts','fetchCategory']),
-        /**
-         * changeList принимает номер выбранной страницы в комплненте Pagination.vue  , записывает номер в переменную this.changedPage, которая передает это значение в компонент HistoryList.vue
-         */
+
         changeList(num){
             this.changedPage = num;
         },
@@ -142,19 +138,7 @@ export default {
             });
         }
     },
-    computed: {
-        ...mapGetters(['getCostList'])
-    },
 
-    created() {
-        this.fetchCategory()
-        this.fetchCosts()
-        this.operationList = this.getCostList
-
-    },
-    // updated() {
-    //     this.operationList = this.getCostList
-    // },
 
 
 }

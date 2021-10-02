@@ -1,11 +1,10 @@
 <template>
     <div class="mainitem__style money__mainblock">
         <h1>{{ msg }}</h1>
-        <HistoryList @delItemToForm="delItemFromArr" :histList="getCostList" :changedPage="changedPage" :lastPage="lastPage"/>
-        <Pagination @pagNum="changeList" @lastNum="changeLastList" :arrQuantity="getCostList.length" ref="changeLastPage"/>
+        <HistoryList @delItemToForm="delItemFromArr" :histList="showArray" />
+        <Pagination  :arrQuantity="operationList.length" :elLimit="count" @choose-page="choosePageHandler"/>
         <button class="money__addformbtn" @click="openForm">NEW COST <span class="money__addformbtn_bigsymbol">{{ showSymbol }}</span></button>
-        <AddForm @addItemToForm="updateArray" v-show="showForm"/>
-        {{operationList}}
+        <AddForm :id-count="operationList.length" @addItemToForm="updateArray" v-show="showForm"/>
     </div>
 </template>
 
@@ -13,7 +12,6 @@
 import HistoryList from "./HistoryList.vue"
 import AddForm from "./AddForm.vue"
 import Pagination from "./Pagination.vue"
-import { mapActions, mapGetters} from "vuex"
 
 export default {
     name: "MoneyApp",
@@ -29,6 +27,8 @@ export default {
             showSymbol: '+',
             changedPage: 1,
             lastPage: 1,
+            count: 5,
+            showArray: [],
             operationList: [
                 {
                     id: '1',
@@ -75,18 +75,15 @@ export default {
             ]
         }
     },
+    created () {
+        this.showArray = this.operationList.slice(0, 5)
+    },
     methods: {
-
-        changeList(num){
-            this.changedPage = num;
+        choosePageHandler (page) {
+            const startNum = page * this.count
+            const lastNum = startNum + this.count
+            this.showArray = this.operationList.slice(startNum, lastNum)
         },
-        /**
-         * changeLastList принимает количество страниц  из комплнента Pagination.vue  , записывает номер в переменную this.lastPage, которая передает это значение в компонент HistoryList.vue
-         */
-        changeLastList(num) {
-            this.lastPage = num
-        },
-        /** Функция управляет открытием формы добавления платежа */
         openForm() {
             this.showForm = !this.showForm
             if(this.showSymbol === '+') {
@@ -95,49 +92,28 @@ export default {
                 this.showSymbol = '+'
             }
         },
-        /** updateId перебирает ключевой массив при добавлении или удалении элемента и обновляет id каждого элемента , последовательно. */
         updateId(){
-            for(let i = 0; i < this.operationList.length; i++) {
+            for(let i = 0; i < this.showArray.length; i++) {
 
-                this.operationList[i].id = `${i+1}`
+                this.showArray[i].id = `${i+1}`
             }
         },
 
-        /**-Принимает элемент из компонента addForm.vue
-         * -Добавляет элемент в конец ключевого массива
-         * -Обновляет все id  методом updateID()
-         * this.lastPage - перелистывает на последнюю страницу при добавлении элемента,для отслеживания этого
-         * this.$refs.changeLastPage.setPagefromParent() вызывает этот метод для стилизации символа последней страницы.
-         * Методы обернуты в таймер ,для того ,чтобы родительская функция успела полностью отработать.
-         */
         updateArray(el) {
-            setTimeout(() => {
-                this.changedPage = this.lastPage
-                this.$refs.changeLastPage.setPagefromParent()
-            }, 100);
-
-            let newItem = {
-                id: '',
-                date: el.date,
-                cat: el.cat,
-                value: el.price
-            }
-            
-            this.operationList.push(newItem)
-            this.updateId()
+            this.operationList = [...this.operationList, el]            
+            // this.updateId()
         },
-        /**
-         * Получает данные нажатой кнопки удаления,перебирая ключевой массив ищет совпадения по айди и удаляет совпавший элемент.
-         */
+
         delItemFromArr(el) {
-            this.operationList.forEach(element => {
+            this.showArray.forEach(element => {
                 if(el == element.id) {
-                    this.operationList.splice(element.id - 1, 1)
+                    this.showArray.splice(element.id - 1, 1)
                 }
-                this.updateId()
+                // this.updateId()
             });
         }
     },
+
 
 
 

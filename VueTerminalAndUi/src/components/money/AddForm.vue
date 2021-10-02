@@ -15,7 +15,7 @@
         <form class="money__addform_form" action="#" @submit.prevent>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="date">When?</label>
-                <input class="money__addform_inputs" type="date" name="date" id="date" required v-model="dateInp" placeholder="fdsf">
+                <input class="money__addform_inputs" type="date" name="date" id="date"  v-model="dateInp" placeholder="fdsf">
             </div>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="cat"> What?</label>
@@ -37,10 +37,12 @@
 <script>
 export default {
     name: "AddForm",
+    props: ['idCount'],
     data() {
         return {
             hiddenAddBlock: false,
             dateInp: '',
+            refDate: '',
             selected: '',
             price: '',
             options: [
@@ -53,24 +55,29 @@ export default {
             ],
         }
     },
+    computed: {
+        getCurrentDate () {
+        const today = new Date()
+        const d = today.getDate()
+        const m = today.getMonth() + 1
+        const y = today.getFullYear()
+        return `${d}.${m}.${y}`
+        }
+    },
     methods: {
-        /**
-         * Вызываем функцию  replaceDate которая форматирует полученную дату.
-         * Доп валидация,чтобы не остались пустые поля
-         * Вызываем метод  ,который соберет обьект с полученными данными и отправит его в родительский компонент
-         */
         addItem() {
-            let newString =  this.replaceDate()
-            if (this.dateInp !== '' && this.selected !== '' && this.price !== '') {
-                this.sendToParent(newString)
+            this.refDate =  this.replaceDate()
+            if (this.selected !== '' && this.price !== '') {
+                this.sendToParent()
             }
             
         },
-        sendToParent(newDate){
+        sendToParent(){
             let newItem = {
-                date: newDate,
+                id: this.idCount + 1,
+                date: this.refDate || this.getCurrentDate,
                 cat: this.selected,
-                price: this.price
+                value: this.price
             }
             this.$emit('addItemToForm',newItem)
         },

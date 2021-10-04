@@ -4,18 +4,18 @@
         <form class="money__addform_form" action="#" @submit.prevent>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="date">When?</label>
-                <input class="money__addform_inputs" type="date" name="date" id="date" required v-model="dateInp" placeholder="fdsf">
+                <input class="money__addform_inputs" type="date" name="date" id="date" v-model="dateInp" >
             </div>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="cat"> What?</label>
-                <select class="money__addform_inputs money__addform_select" name="cat" id="cat" v-model="selected" required>
+                <select class="money__addform_inputs money__addform_select" name="cat" id="cat" v-model="selected"  required>
                 <option v-for="option in getCatList" :key="option.id"  :value="option.text">{{ option.text }}</option>
                 </select>
                 <button class="money__addform_setbtn" @click.prevent="hiddenAddBlock = !hiddenAddBlock"><i class="fas fa-cog"></i></button>
             </div>
             <div class="money__addform_item">
                 <label class="money__addform_labels" for="price"> How much?</label>
-                <input class="money__addform_inputs" type="number" id="price" v-model="price" placeholder="Rub." required>
+                <input class="money__addform_inputs" type="number" id="price" v-model="price"  placeholder="Rub." required>
             </div>
 
             <button class="money__addform_btn" @submit.prevent  @click="addItem">ADD +</button>
@@ -46,22 +46,21 @@ export default {
 
         addItem() {
             let newString =  this.replaceDate()
-            if (this.dateInp !== '' && this.selected !== '' && this.price !== '') {
+            if ( this.selected !== '' && this.price !== '') {
                 this.sendToParent(newString)
             }
         },
         sendToParent(newDate){
             let newItem = {
                 id: '',
-                date: newDate,
+                date: newDate || this.getCurrentDate,
                 cat: this.selected,
                 value: this.price
             }
             this.$store.commit('setAddCostItem',newItem)
             this.$store.commit('updateCostId')
-            setTimeout(() => {
-                this.$store.commit('actualPageChange',this.lastPage)
-            }, 10);
+            this.$store.commit('actualPageChange',this.lastPage)
+           
         },
         replaceDate() {
             let re = /-/gi
@@ -73,7 +72,32 @@ export default {
 
     },
     computed: {
-        ...mapGetters(['getCatList','lastPage'])    
+        ...mapGetters(['getCatList','lastPage']),
+        getCurrentDate () {
+            const today = new Date()
+            const d = today.getDate()
+            const m = today.getMonth() + 1
+            const y = today.getFullYear()
+            return `${d}.${m}.${y}`
+        },    
+        routName() {
+            return this.$route.name
+        },
+        routVal() {
+            return this.$route.params.value
+        }
+
+
+    },
+    // Алексей здесь не до конца разобрался с хуками. То надо костылить setTimout , то нет , и так работает. Есть ли какие то мысли по этому поводу?
+
+    //Второй вопрос глобальней, в данном компоненте нам прилетевшие данные надо просто записать в наши переменные. Но я не понимаю как это сделать! я просидел целый день только над этим! я уже все хуки перепробовал,я уже что только не придумывал,стирал сотню раз. 
+        //Пока самый красивый костыль - то что есть. Здесь мы в Created (кстатее почему то именно сейчас он без setTimout отказался работать) делаем то что нужно. При нажатии на следующую ссылку у нас выполняется функция из хранилища (reOpenForm),которая закрывает и заного открывает форму. Но я хотел бы актуализировать данные без перезагрузки,при этом никуда дополнительно не нажимая. По ощущениям,это должно быть какое то компьютед свойство, но в computed нельзя сделать запись в переменную. В общем буду рад подсказке!
+    created() {
+        setTimeout(() => {
+            this.selected = this.$route.name
+            this.price = this.$route.params.value
+        }, 1);
     },
 
     

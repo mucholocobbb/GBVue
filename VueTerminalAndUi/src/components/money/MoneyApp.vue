@@ -3,8 +3,9 @@
         <h1>{{ msg }}</h1>
         <HistoryList/>
         <Pagination/>
-        <button class="money__addformbtn" @click="openForm">NEW COST <span class="money__addformbtn_bigsymbol">{{ showSymbol }}</span></button>
-        <AddForm  v-show="showForm"/>
+        <FastCat/>
+        <button class="money__addformbtn" @click="openForm">NEW COST <span class="money__addformbtn_bigsymbol">{{ getShowSymbol }}</span></button>
+        <AddForm  v-if="getShowForm"/>
     </div>
 </template>
 
@@ -12,6 +13,8 @@
 import HistoryList from "./HistoryList.vue"
 import AddForm from "./AddForm.vue"
 import Pagination from "./Pagination.vue"
+import FastCat from "./FastCat.vue"
+
 import { mapActions, mapGetters, mapMutations} from "vuex"
 
 export default {
@@ -20,38 +23,40 @@ export default {
     components: {
         HistoryList,
         AddForm,
-        Pagination
+        Pagination,
+        FastCat
     },
     data() {
         return {
-            showForm: false,
-            showSymbol: '+',
+            // showForm: false,
+            // showSymbol: '+',
 
         }
     },
     methods: {
-        ...mapActions(['fetchCosts','fetchCategory']),
-        ...mapMutations(['']),
+        ...mapActions(['fetchCosts','fetchCategory','fetchFastCategory']),
+        ...mapMutations(['openForm']),
 
-        openForm() {
-            this.showForm = !this.showForm
-            if(this.showSymbol === '+') {
-                this.showSymbol = '-'
-            }else {
-                this.showSymbol = '+'
-            }
-        },
+        // openForm() {
+        //     this.showForm = !this.showForm
+        //     if(this.showSymbol === '+') {
+        //         this.showSymbol = '-'
+        //     }else {
+        //         this.showSymbol = '+'
+        //     }
+        // },
         // - При обновлении или загрузке - переключается на последнюю страницу
         // - Доделать!
 
 
     },
     computed: {
-        ...mapGetters(['getCostList'])
+        ...mapGetters(['getCostList','getShowForm','getShowSymbol'])
     },
 
     created() {
         this.fetchCategory()
+        this.fetchFastCategory()
         this.fetchCosts()   
     },
 

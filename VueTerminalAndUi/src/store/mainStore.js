@@ -1,19 +1,26 @@
 const API = 'https://raw.githubusercontent.com/mucholocobbb/API-s/master/ForGeekBrains/'
 const CostApi = 'vueCostsApi.json'
 const CatApi = 'vueCategoryApi.json'
+const CatFastApi = 'VueFastCategoryApi.json'
 
 const state = {
     operationList: [],
     categoryList: [],
+    fastCategory: [],
     pageQuantity: 1,
     lastPage: 1,
+    showForm: false,
+    showSymbol: '+',
 }
 
 const getters = {
     getCostList: state => state.operationList,
     getCatList: state => state.categoryList,
+    getFastCatList: state => state.fastCategory,
     actualPage: state => state.pageQuantity,
     lastPage: state => state.lastPage,
+    getShowForm: state => state.showForm,
+    getShowSymbol: state => state.showSymbol,
 }
 
 const mutations = {
@@ -47,6 +54,11 @@ const mutations = {
     addCatItem(state, newItem) {
         state.categoryList.push(newItem)
     },
+    //FastCategoryArray
+    setFastCatArray(state, data) {
+        state.fastCategory = data
+    },
+
     //Pagination
     actualPagePlus(state) {
         state.pageQuantity++
@@ -60,6 +72,22 @@ const mutations = {
     setLastPage(state, info) {
         state.lastPage = info
     },
+
+    //--------
+    openForm() {
+        state.showForm = !state.showForm
+        if (state.showSymbol === '+') {
+            state.showSymbol = '-'
+        } else {
+            state.showSymbol = '+'
+        }
+    },
+    reOpenForm() {
+        state.showForm = false
+        setTimeout(() => {
+            state.showForm = true
+        }, 1);
+    }
 
 
 }
@@ -85,6 +113,17 @@ const actions = {
             })
             .then((data) => {
                 commit('setCatArray', data)
+            });
+    },
+    fetchFastCategory({
+        commit
+    }) {
+        fetch(API + CatFastApi)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                commit('setFastCatArray', data)
             });
     }
 

@@ -38,34 +38,11 @@ export default {
     computed: {
         ...mapGetters(['getCostList','actualPage']),   
         setArrRange () {
-            let changeP = this.actualPage
-
-            // Здесь разобраться ,как связать динамически - количество страниц и  количество условных итерраций. Разбивать массив на страницы,как в методичке- кажется плохой затеей. Как минимум такой же плохо масштабируемой ,как и моя
-
-
-            return this.getCostList.filter(function (number) {
-                    if(changeP === 1) {
-                        return  number.id > 0 && number.id <= 5 
-                    } else if ( changeP === 2) {
-                        return  number.id > 5 && number.id <= 10 
-                    }else if ( changeP === 3) {
-                        return  number.id > 10 && number.id <= 15 
-                    }else if ( changeP === 4) {
-                        return  number.id > 15 && number.id <= 20 
-                    }else if ( changeP === 5) {
-                        return  number.id > 20 && number.id <= 25 
-                    }else if ( changeP === 6) {
-                        return  number.id > 25 && number.id <= 30 
-                    }else if ( changeP === 7) {
-                        return  number.id > 35 && number.id <= 40 
-                    }else if ( changeP === 8) {
-                        return  number.id > 45 && number.id <= 50 
-                    }else if ( changeP === 9) {
-                        return  number.id > 55 && number.id <= 60 
-                    }else if ( changeP === 10) {
-                        return  number.id > 65 && number.id <= 70 
-                    }
-            })
+            const count = 5
+            let changeP = this.actualPage <= 0 ? 0 : this.actualPage - 1
+            const startNum = changeP * count
+            const lastNum = startNum + count
+            return this.getCostList.slice(startNum,lastNum)
             }
     },
 }

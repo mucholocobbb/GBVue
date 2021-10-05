@@ -18,6 +18,11 @@ const routes = [{
         path: '/add/payment/Entertainment?value=1600',
         name: 'Entertainment',
         component: () => import('../components/money/AddForm')
+    },
+    {
+        path: '/MoneyApp',
+        name: 'money',
+        component: () => import('../components/money/MoneyApp')
     }
 ]
 

@@ -6,6 +6,15 @@
         <FastCat/>
         <button class="money__addformbtn" @click="openForm">NEW COST <span class="money__addformbtn_bigsymbol">{{ getShowSymbol }}</span></button>
         <AddForm  v-if="getShowForm"/>
+        <ModalWindow
+            v-if="ModalWindoW"
+            :ModalWindoW="ModalWindoW"
+            :modalWindowSettings="modalWindowSettings"
+        />
+        <button @click="$modal.show('AuthForm',{
+                header: '2',
+                name: 'AuthForm'
+            })">12</button>
     </div>
 </template>
 
@@ -14,6 +23,7 @@ import HistoryList from "./HistoryList.vue"
 import AddForm from "./AddForm.vue"
 import Pagination from "./Pagination.vue"
 import FastCat from "./FastCat.vue"
+import ModalWindow from './ModalWindow.vue'
 
 import { mapActions, mapGetters, mapMutations} from "vuex"
 
@@ -24,29 +34,30 @@ export default {
         HistoryList,
         AddForm,
         Pagination,
-        FastCat
+        FastCat,
+        ModalWindow
     },
     data() {
         return {
-            // showForm: false,
-            // showSymbol: '+',
-
+            ModalWindoW: '',
+            modalWindowSettings: {},
+            settings: {
+                header: '2',
+                name: 'AuthForm'
+            }
         }
     },
     methods: {
         ...mapActions(['fetchCosts','fetchCategory','fetchFastCategory']),
         ...mapMutations(['openForm']),
-
-        // openForm() {
-        //     this.showForm = !this.showForm
-        //     if(this.showSymbol === '+') {
-        //         this.showSymbol = '-'
-        //     }else {
-        //         this.showSymbol = '+'
-        //     }
-        // },
-        // - При обновлении или загрузке - переключается на последнюю страницу
-        // - Доделать!
+        onShown (settings) {
+            this.ModalWindoW = settings.name
+            this.modalWindowSettings = settings
+        },
+        onHide () {
+            this.ModalWindoW = ''
+            this.modalWindowSettings = {}
+        },
 
 
     },
@@ -59,6 +70,11 @@ export default {
         this.fetchFastCategory()
         this.fetchCosts()   
     },
+      mounted () {
+    this.$modal.EventBus.$on('shown', this.onShown)
+    this.$modal.EventBus.$on('hide', this.onHide)
+},
+
 
 
 

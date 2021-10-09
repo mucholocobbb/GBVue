@@ -1,6 +1,6 @@
 <template>
     <div class="mainitem__style money__mainblock">
-        <h1>{{ msg }}</h1>
+        <h1>{{ $route.params.message }}</h1>
         <HistoryList/>
         <Pagination/>
         <FastCat/>
@@ -19,7 +19,6 @@ import { mapActions, mapGetters, mapMutations} from "vuex"
 
 export default {
     name: "MoneyApp",
-    props: ["msg"],
     components: {
         HistoryList,
         AddForm,
@@ -28,8 +27,6 @@ export default {
     },
     data() {
         return {
-            // showForm: false,
-            // showSymbol: '+',
 
         }
     },
@@ -37,14 +34,6 @@ export default {
         ...mapActions(['fetchCosts','fetchCategory','fetchFastCategory']),
         ...mapMutations(['openForm']),
 
-        // openForm() {
-        //     this.showForm = !this.showForm
-        //     if(this.showSymbol === '+') {
-        //         this.showSymbol = '-'
-        //     }else {
-        //         this.showSymbol = '+'
-        //     }
-        // },
         // - При обновлении или загрузке - переключается на последнюю страницу
         // - Доделать!
 

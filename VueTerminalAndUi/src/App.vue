@@ -2,25 +2,17 @@
   <div id="app">
     <img class="mainlogo__style" alt="Vue logo" src="./assets/logo.png" />
     <div class="mainbtn__block">
-      <button class="mainbtn__style" v-bind:class="{mainbtn__active: item.show}" @click="checkItem($event)" v-for="item of buttonsArray" :key="item.id">{{ item.name }}</button>
+    <button class="mainbtn__style" v-bind:class="{mainbtn__active: item.show}" @click="checkItem(item.name, item.id, item.msg)" v-for="item of buttonsArray" :key="item.id">{{ item.name }}</button>
     </div>
-    <!-- <h1>Нашел интересное решение переключения между компонентами:https://codesandbox.io/s/github/vuejs/vuejs.org/tree/master/src/v2/examples/vue-20-dynamic-components </h1> -->
-    <Calculator v-show="buttonsArray[0].show" msg="Calculator from first Lesson."/>
-    <SoundBtn v-show="buttonsArray[1].show" text="This is sound Button."/>
-    <MoneyApp v-show="buttonsArray[2].show" msg="Where you Money?"/>
-
+    <router-view/>
     
   </div>
 </template>
 
 <script>
-import Calculator from "./components/calc/Calculator.vue";
 
 export default {
   name: "App",
-  components: {
-    Calculator,
-  },
   data() {
     return {
       showSoundBtn: false,
@@ -28,36 +20,28 @@ export default {
         name: 'Calculator',
         id: 0,
         show: false,
+        msg: 'Possibly the best calculator!'
       },
       {
         name: 'Sound Button',
         id: 1,
         show: false,
+        msg: 'Just sound button...'
       },
       {
         name: 'Money Notes',
         id: 2,
         show: true,
+        msg: 'Where you money?!'
       }
       ]
     }
   },
   methods: {
-    checkItem(event) {
-      switch (event.target.innerText) {
-        case 'Calculator':
-          this.hiddenItems()
-          this.buttonsArray[0].show = true
-          break;
-        case 'Sound Button':
-          this.hiddenItems()
-          this.buttonsArray[1].show = true
-          break;  
-        case 'Money Notes':
-          this.hiddenItems()
-          this.buttonsArray[2].show = true
-          break;   
-      }
+    checkItem(itemName, id, msg) {
+      this.hiddenItems()
+      this.buttonsArray[id].show = true
+      this.$router.push({name: itemName, params: {message: msg}}).catch(() => {})
     },
     hiddenItems() {
       for (let i = 0; i < this.buttonsArray.length; i++) {
@@ -65,6 +49,9 @@ export default {
       }
     } 
 
+  },
+  created() {
+    this.$router.push({name: 'Money Notes', params: {message: 'Where you money?!'}}).catch(() => {})
   },
 };
 </script>

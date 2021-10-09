@@ -1,6 +1,6 @@
 <template>
   <div class="mainitem__style">
-    <h1>{{ msg }}</h1>
+    <h1>{{ $route.params.message }}</h1>
         <div class="itemblock__style">
             <input class="iteminput__style" type="number" v-model.number="firstNum" :placeholder="place1" :disabled="checked">
             <h3 class="itemsymbol__style">{{ sym }}</h3>
@@ -26,12 +26,6 @@
         </div>
         <LogBlock v-show="showLogs" :leftInput="firstNum" :rightInput="secNum" :symbol="sym" :resultLog="result" ref="logsBlock"/>
         <DispKeyboard @checkedStrings="checkInput" v-show="checked"/>
-        
-
-
-
-
-
   </div>
 </template>
 
@@ -44,9 +38,6 @@ export default {
   components: {
     LogBlock,
     DispKeyboard,
-  },
-  props: {
-    msg: String,
   },
   data() {
     return {

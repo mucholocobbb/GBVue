@@ -1,7 +1,7 @@
 <template>
     <div class="fastcategory">
         <h3 class="fastcategory__text">Fast choise :</h3>
-        <button class="fastcategory__btn" v-for="item in searchFastCat" :key="item.id" @click="fastClick(item.name, item.value)">{{ item.name }}</button>
+        <button class="fastcategory__btn" v-for="item in getFastCatList" :key="item.id" @click="fastClick(item.name, item.value)">{{ item.name }}</button>
   
  
     </div>
@@ -14,9 +14,6 @@ export default {
     name: 'FastCat',
     computed: {
         ...mapGetters(['getFastCatList','getShowForm']),   
-        searchFastCat() {
-            return this.getFastCatList
-        }
     },
     methods: {
         ...mapMutations(['openForm', 'reOpenForm']),

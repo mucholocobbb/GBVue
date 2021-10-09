@@ -44,6 +44,16 @@ const mutations = {
             }
         });
     },
+    editCostItem(state, item) {
+        state.operationList.forEach(el => {
+            if (item.id == el.id) {
+                el.date = item.date
+                el.cat = item.cat
+                el.value = item.value
+            }
+        })
+        state.operationList = [...state.operationList]
+    },
     //CategoryArray
     setCatArray(state, data) {
         state.categoryList = data

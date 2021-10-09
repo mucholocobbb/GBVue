@@ -8,31 +8,53 @@
         </div>
 
         <div class="money__listheader money__listheader_item" v-for="item in setArrRange" :key="item.id"> 
-            <div class="money__listheader_closebtnblock" ><a class="money__listheader_closebtn" @click.prevent="delItem($event)" :data-id="item.id" href="#">&#10006;</a>
-            </div>
+            <transition name="fade">
+                <ModalWindow class="money__modalwindow"
+                    v-if="showModal === settings.name + item.id"
+                    :elem="item"
+                />
+            </transition>
             <p class="money__categories">{{ item.id}}</p>
             <p class="money__categories">{{ item.date }}</p>
             <p class="money__categories">{{ item.cat }}</p>
             <p class="money__categories">{{ item.value }} &#8381;</p>
+            <button class="money__modallist money__categories " @click="$modal.show(settings.name + item.id, settings)"><i class="fas fa-bars"></i></button>
         </div>
     
     </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations} from "vuex"
+import { mapGetters} from "vuex"
 
 export default {
     name: "HistoryList",
+    data() {
+        return {
+            showModal: '',
+            ModalWindow: '',
+            modalSettings: {},
+            settings: {
+                name: 'SetCategory',
+                value: '32'
+            }
+        }
+    },
+    components: {
+        ModalWindow: () => import('./ModalWindow.vue')
+    },
     methods: {
-        ...mapMutations(['delCostItem','updateCostId']),
-        delItem(event) {
-            let delItem =  event.target.getAttribute("data-id")
-            console.log(delItem);
-            this.$store.commit('delCostItem',delItem)
-            this.$store.commit('updateCostId')
-            //При удалении всех элементов со страницы ,не переключается на предидущую
+        onShown(name, settings) {
+            this.showModal = name
+            this.ModalWindow = settings.name
+            this.modalSettings = settings
         },
+        onHide() {
+            this.showModal = ''
+            this.ModalWindow = ''
+            this.modalSettings = {}
+        }
+
 
     },
     computed: {
@@ -45,12 +67,33 @@ export default {
             return this.getCostList.slice(startNum,lastNum)
             }
     },
+    mounted() {
+        this.$modal.EventBus.$on('shown', this.onShown)
+        this.$modal.EventBus.$on('hide', this.onHide)
+    },
 }
 </script>
 
 <style lang="sass">
+// Modal Animation
+.fade-enter-active, .fade-leave-active 
+    transition: opacity .3s
+.fade-enter, .fade-leave-to 
+    opacity: 0
 .money
+    
+    &__modallist
+        background: white
+        outline: none
+        border: 0
+        &:hover
+            color: gray
+            transform: scale(1.02)
+        &:active
+            color: red    
+            transform: scale(1.05)
     &__listheader
+        position: relative
         color: black
         font-size: 14px
         font-weight: 800
@@ -58,7 +101,7 @@ export default {
         width: 450px
         margin: 0 auto
         display: grid
-        grid-template-columns: 1fr 3fr 3fr 2fr
+        grid-template-columns: 1fr 3fr 3fr 2fr 1fr
         margin-bottom: 16px
         &_item
             font-weight: 600
@@ -66,31 +109,15 @@ export default {
             margin-bottom: 0
             color: gray
             position: relative
-        &_closebtnblock
-            position: absolute
-            box-sizing: border-box
-            height: 43px
-            width: 60px
-            text-align: end
-            padding-right: 8px
-            line-height: 45px
-            right: 0
-            &:hover
-                background: linear-gradient(90deg, rgba(255,255,255,0) 10%, rgba(231,77,125,1) 74%)
-
-        &_closebtn
-            text-decoration: none
-            color: #fff
-            font-size: 18px
-            transition: all 0.2s
-            &:active
-                color: #f664649c
-
-
     &__categories
         margin-block-start: 12px
         margin-block-end: 12px
         text-align: center
+    &__modalwindow
+        position: absolute
+
+
+
 
 
 </style>

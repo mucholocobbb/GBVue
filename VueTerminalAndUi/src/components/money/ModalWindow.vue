@@ -95,9 +95,6 @@ export default {
                 this.showEditBlock = false
                 this.showLoading = false
             }, randomTime());
-            console.log(randomTime());
-
-
         }
     },
     computed: {

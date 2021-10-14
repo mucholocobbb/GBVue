@@ -10,7 +10,7 @@
         <div class="money__listheader money__listheader_item" v-for="item in setArrRange" :key="item.id"> 
             <transition name="fade">
                 <ModalWindow class="money__modalwindow"
-                    v-if="showModal === settings.name + item.id"
+                    v-if="activeId === item.id"
                     :elem="item"
                 />
             </transition>
@@ -18,7 +18,7 @@
             <p class="money__categories">{{ item.date }}</p>
             <p class="money__categories">{{ item.cat }}</p>
             <p class="money__categories">{{ item.value }} &#8381;</p>
-            <button class="money__modallist money__categories " @click="$modal.show(settings.name + item.id, settings)"><i class="fas fa-bars"></i></button>
+            <button class="money__modallist money__categories " @click="$modal.show(item.id)"><i class="fas fa-bars"></i></button>
         </div>
     
     </div>
@@ -31,28 +31,18 @@ export default {
     name: "HistoryList",
     data() {
         return {
-            showModal: '',
-            ModalWindow: '',
-            modalSettings: {},
-            settings: {
-                name: 'SetCategory',
-                value: '32'
-            }
+            activeId: '',
         }
     },
     components: {
         ModalWindow: () => import('./ModalWindow.vue')
     },
     methods: {
-        onShown(name, settings) {
-            this.showModal = name
-            this.ModalWindow = settings.name
-            this.modalSettings = settings
+        onShown(id) {
+            this.activeId = id
         },
         onHide() {
-            this.showModal = ''
-            this.ModalWindow = ''
-            this.modalSettings = {}
+            this.activeId = ''
         }
 
 

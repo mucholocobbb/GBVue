@@ -26,7 +26,8 @@ const getters = {
 const mutations = {
     //CostsArray
     setCostsArray(state, data) {
-        state.operationList = data
+        Object.assign(state.operationList, data)
+        state.operationList = [...state.operationList]
     },
     setAddCostItem(state, data) {
         state.operationList.push(data)

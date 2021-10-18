@@ -1,5 +1,6 @@
 <template>
     <div class="mainitem__style">
+        <h1>{{ msg }}</h1>
         <h1>{{ $route.params.message }}</h1>
         <button class="soundbtn__style" @click="pushTheButton">PUSH ME</button>
     </div>
@@ -7,7 +8,8 @@
 <script>
 export default {
     name: 'SoundBtn',
-  methods: {
+    props: ['msg'],
+    methods: {
       pushTheButton(){
         let mySound = new Audio('../sound.mp3')
         mySound.play()

@@ -5,25 +5,24 @@ import categories from '@/router/catRoutes'
 
 Vue.use(VueRouter)
 
-const routes = [
-    {
+const routes = [{
         path: '/CalculatorPage',
         name: 'Calculator',
-        component: () => import(/*webpackChunkName: "CalculatorPage" */ '../components/calc/Calculator')
+        component: () => import( /*webpackChunkName: "CalculatorPage" */ '../components/calc/Calculator')
     },
     {
         path: '/SoundButtonPage',
         name: 'Sound Button',
-        component: () => import(/*webpackChunkName: "SoundButtonPage" */ '../components/SoundBtn')
+        component: () => import( /*webpackChunkName: "SoundButtonPage" */ '../components/SoundBtn')
     },
     {
         path: '/MoneyAppPage',
         name: 'Money Notes',
-        component: () => import(/*webpackChunkName: "MoneyAppPage" */ '../components/money/MoneyApp')
+        component: () => import( /*webpackChunkName: "MoneyAppPage" */ '../components/money/MoneyApp')
     },
     ...categories,
-    
-    
+
+
 ]
 
 const router = new VueRouter({

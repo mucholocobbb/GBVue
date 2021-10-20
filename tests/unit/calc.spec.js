@@ -132,7 +132,7 @@ describe('Test Display Keyboard', () => {
 
         expect(wrapper.vm.leftString).toBe('19')
     })
-    test('Тест 2: Test "C" key', () => {
+    test('Тест 3: Test "C" key', () => {
         const wrapper = mount(KeyComp)
 
         const inp = wrapper.find('#one')
@@ -147,7 +147,7 @@ describe('Test Display Keyboard', () => {
 
         expect(wrapper.vm.leftString).toBe('9')
     })
-    test('Тест 2: Test "D" key', () => {
+    test('Тест 4: Test "D" key', () => {
         const wrapper = mount(KeyComp)
 
         const inp = wrapper.find('#one')

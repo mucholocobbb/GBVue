@@ -93,11 +93,17 @@ const mutations = {
             state.showSymbol = '+'
         }
     },
-    reOpenForm() {
-        state.showForm = false
-        setTimeout(() => {
-            state.showForm = true
-        }, 1);
+    reOpenForm(state, flag) {
+        // Пока оставлю этот метод < -- > fastCat.vue 
+        // state.showForm = false
+        // setTimeout(() => {
+        //     state.showForm = true
+        // }, 1);
+        if(flag !== undefined) {
+            state.showForm = flag
+        } else {
+            state.showForm = !state.showForm
+        }
     }
 
 

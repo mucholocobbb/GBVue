@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import categories from '@/router/catRoutes'
 
 
 Vue.use(VueRouter)
@@ -20,27 +21,14 @@ const routes = [
         name: 'Money Notes',
         component: () => import(/*webpackChunkName: "MoneyAppPage" */ '../components/money/MoneyApp')
     },
+    ...categories,
     
-    {
-        path: '/MoneyAppPage/add/payment/Food?value=200',
-        name: 'Food',
-        component: () => import('../components/money/AddForm')
-    },
-    {
-        path: '/MoneyAppPage/add/payment/Transport?value=50',
-        name: 'Transport',
-        component: () => import('../components/money/AddForm')
-    },
-    {
-        path: '/MoneyAppPage/add/payment/Entertainment?value=1600',
-        name: 'Entertainment',
-        component: () => import('../components/money/AddForm')
-    }
+    
 ]
 
 const router = new VueRouter({
-    
-    base: process.env.BASE_URL,
+    // mode: 'history',
+    // base: process.env.BASE_URL,
     routes
 })
 

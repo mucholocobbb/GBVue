@@ -17,15 +17,23 @@ export default {
     },
     methods: {
         ...mapMutations(['openForm', 'reOpenForm']),
-        fastClick(rout,val) {
-            if(this.getShowForm){
-                this.reOpenForm()
-                this.$router.push({name: rout, params: {value: val}}).catch(() => {})
-            } else {
-                this.openForm()
-                this.$router.push({name: rout, params: {value: val}}).catch(() => {})
-            }
+        //Пока оставлю свой метод. Если заработает со вложенными роутами - убрать
 
+        // fastClick(rout,val) {
+        //     if(this.getShowForm){
+        //         this.reOpenForm()
+        //         this.$router.push({name: rout, params: {value: val}}).catch(() => {})
+        //     } else {
+        //         this.openForm()
+        //         this.$router.push({name: rout, params: {value: val}}).catch(() => {})
+        //     }
+
+        // }
+        fastClick(rout,val) {
+            if(this.$route.rout !== rout) {
+                this.$router.push({name: rout, params: {value: val}})
+                this.reOpenForm(false)
+            }
         }
     },
 }

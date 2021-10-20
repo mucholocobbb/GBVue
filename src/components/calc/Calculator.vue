@@ -2,10 +2,10 @@
   <div class="mainitem__style">
     <h1>{{ $route.params.message }}</h1>
         <div class="itemblock__style">
-            <input class="iteminput__style" type="number" v-model.number="firstNum" :placeholder="place1" :disabled="checked">
+            <input class="iteminput__style inputFirst" name="firstNum" type="number" v-model.number="firstNum" :placeholder="place1" :disabled="checked">
             <h3 class="itemsymbol__style">{{ sym }}</h3>
-            <input class="iteminput__style" :class="{itemerror__style: errStyle}" type="number" v-model.number="secNum" :placeholder="place2" :disabled="checked">
-            <button class="itembtn__style" @click="calculate" :disabled="firstNum === '' || secNum === ''">=</button>
+            <input class="iteminput__style" name="secNum" :class="{itemerror__style: errStyle}" type="number" v-model.number="secNum" :placeholder="place2" :disabled="checked">
+            <button class="itembtn__style buttonTest" @click="calculate" :disabled="isActiveBtn">=</button>
             <h3 class="itemsymbol__style">{{ result }}</h3>
         </div>
         <h3 v-if="errStyle" :class="{itemerror__style: errStyle}">{{ validError }}</h3>
@@ -60,6 +60,11 @@ export default {
         { id: 4 , sym: '*'},
       ],
     };
+  },
+  computed: {
+    isActiveBtn() {
+      return this.firstNum === '' || this.secNum === ''
+    }
   },
   methods: {
     checkInput(strings) {

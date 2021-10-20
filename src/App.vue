@@ -5,7 +5,6 @@
     <button class="mainbtn__style" v-bind:class="{mainbtn__active: item.show}" @click="checkItem(item.name, item.id, item.msg)" v-for="item of buttonsArray" :key="item.id">{{ item.name }}</button>
     </div>
     <router-view/>
-    
   </div>
 </template>
 
@@ -13,8 +12,10 @@
 
 export default {
   name: "App",
+
   data() {
     return {
+      message: 'new message',
       showSoundBtn: false,
       buttonsArray: [{
         name: 'Calculator',

@@ -7,7 +7,7 @@
 <script>
 export default {
     name: 'SoundBtn',
-  methods: {
+    methods: {
       pushTheButton(){
         let mySound = new Audio('../sound.mp3')
         mySound.play()

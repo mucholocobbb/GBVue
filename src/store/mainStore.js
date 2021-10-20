@@ -99,6 +99,8 @@ const mutations = {
         // setTimeout(() => {
         //     state.showForm = true
         // }, 1);
+
+        // Скорее всего понадобиться добавить смену символа
         if(flag !== undefined) {
             state.showForm = flag
         } else {

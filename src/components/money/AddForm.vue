@@ -92,7 +92,7 @@ export default {
 
     created() {
         setTimeout(() => {
-            this.selected = this.$route.name
+            this.selected = this.routName
             this.price = this.$route.params.value
         }, 1);
     },

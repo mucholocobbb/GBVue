@@ -4,7 +4,7 @@ const categoriesRoutes = [
         component: () => import('../components/money/AddForm')
     },
     {
-        path: '/Food?value=value',
+        path: '/Food?value=:value',
         name: 'Food',
         component: () => import('../components/money/AddForm')
     },
@@ -14,7 +14,7 @@ const categoriesRoutes = [
         component: () => import('../components/money/AddForm')
     },
     {
-        path: '/Transport?value=value',
+        path: '/Transport?value=:value',
         name: 'Transport',
         component: () => import('../components/money/AddForm')
     },
@@ -24,7 +24,7 @@ const categoriesRoutes = [
         component: () => import('../components/money/AddForm')
     },
     {
-        path: '/Entertainment?value=value',
+        path: '/Entertainment?value=:value',
         name: 'Entertainment',
         component: () => import('../components/money/AddForm')
     },

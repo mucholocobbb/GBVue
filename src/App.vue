@@ -12,9 +12,10 @@
 
 export default {
   name: "App",
+
   data() {
     return {
-      msg: 'new message',
+      message: 'new message',
       showSoundBtn: false,
       buttonsArray: [{
         name: 'Calculator',

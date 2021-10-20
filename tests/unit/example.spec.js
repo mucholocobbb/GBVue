@@ -1,16 +1,26 @@
 import {
-  shallowMount
+  mount
 } from '@vue/test-utils'
-import SoundBtn from '@/components/SoundBtn.vue'
+import TestComp from '@/components/TestComponent.vue'
 
-describe('SoundBtn.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(SoundBtn, {
+describe('Текстовые тесты', () => {
+  test('Тест 1', () => {
+    const wrapper = mount(TestComp, {
       propsData: {
-        msg
+        message: 'World'
       }
     })
-    expect(wrapper.text()).toMatch(msg)
+
+    expect(wrapper.text()).toContain('Hello World')
+  })
+  test('Тест 2', () => {
+
+    const wrapper2 = mount(TestComp, {
+      propsData: {
+        message: 'Pidr'
+      }
+    })
+
+    expect(wrapper2.text()).toContain('Hello Pidr')
   })
 })

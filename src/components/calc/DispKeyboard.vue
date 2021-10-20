@@ -9,7 +9,7 @@
         </div>
 
         <div class="dispbtns__btnblock">
-            <button class="itembtn__style"  v-for="item in dispKeyboard" :key="item.id" @click="clickBtn($event)">{{ item.sym }}</button>
+            <button class="itembtn__style" :name="item.sym"  v-for="item in dispKeyboard" :key="item.id" @click="clickBtn(item.sym)">{{ item.sym }}</button>
         </div>
     </div>
 </template>
@@ -42,19 +42,19 @@ export default {
 
     methods: {
         clickBtn(event) {   
-            if(event.target.innerText !== 'C' && event.target.innerText !== 'D' ) {
+            if(event !== 'C' && event !== 'D' ) {
                 if(this.checkedInp === 'Operand-1') {
-                this.leftString += event.target.innerText
+                this.leftString += event
                 } else if(this.checkedInp === 'Operand-2'){
-                this.rightString += event.target.innerText
+                this.rightString += event
                 }
-            } else if (event.target.innerText === 'D') {
+            } else if (event === 'D') {
                 if(this.checkedInp === 'Operand-1') {
                 this.leftString = ''
                 } else if(this.checkedInp === 'Operand-2'){
                 this.rightString = ''
                 }     
-            } else if (event.target.innerText === 'C') {
+            } else if (event === 'C') {
                 if(this.checkedInp === 'Operand-1') {
                 this.leftString = this.leftString.slice(0, -1)
                 } else if(this.checkedInp === 'Operand-2'){

@@ -26,7 +26,7 @@ export default {
        border-radius: 50%
        margin-bottom: 64px
        color: red
-       font-size: 34px
+       font-size: 38px
        box-shadow: 0 0 15px -5px black
        transition: all 0.1s
        &:active

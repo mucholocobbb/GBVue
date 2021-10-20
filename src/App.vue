@@ -79,6 +79,10 @@ export default {
   flex-direction: column
   align-items: center
 
+h1 
+  margin-bottom: 24px
+  margin-top: 24px
+  
 .mainlogo__style 
   transform: scale(0.5)
 
@@ -99,6 +103,8 @@ export default {
   position: relative
   border: 1px solid #000
   height: 24px
+  font-size: 14px
+  width: 100px
   border-bottom-left-radius: 0
   border-bottom-left-radius: 0
   border-top-left-radius: 5px

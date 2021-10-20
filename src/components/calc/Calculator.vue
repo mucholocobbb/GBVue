@@ -148,7 +148,14 @@ export default {
   .iteminput__style 
       height: 40px
       width: 80px
+      border-radius: 5px
+      border: 2px solid #41b883
       box-sizing: border-box
+      text-align: center
+      transition: all 0.2s
+      &:disabled
+        background: #66666626
+        border: 1px solid #66666626
   
   .itembtn__style 
       width: 40px
@@ -156,6 +163,19 @@ export default {
       margin: 0 4px
       color: #00b061
       font-size: 20px
+      border-radius: 5px
+      border: 1px solid #41b883
+      transition: all 0.2s
+      &:disabled
+        background: #66666626
+        border: 1px solid #66666626
+      &:hover
+        background: #41b88330 
+      &:active
+        background: #61e3a9b5
+        color: #ffffff
+
+        
   
   .itemcbox__style 
     height: 14px

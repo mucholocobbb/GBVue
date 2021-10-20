@@ -6,6 +6,7 @@ import CalcApp from './components/calc/Calculator'
 import ModalPlugin from './plugins/ModalWin'
 import store from './store'
 import router from './router'
+import vuetify from './plugins/vuetify'
 
 Vue.use(ModalPlugin, { someOption: true })
 Vue.component('SoundBtn', SoundBtn)
@@ -19,5 +20,6 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   store,
+  vuetify,
   router
 }).$mount('#app')

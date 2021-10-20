@@ -20,6 +20,11 @@ const routes = [{
         name: 'Money Notes',
         component: () => import( /*webpackChunkName: "MoneyAppPage" */ '../components/money/MoneyApp')
     },
+    {
+        path: '/VuetifyPage',
+        name: 'Vuetify',
+        component: () => import( /*webpackChunkName: "MoneyAppPage" */ '../components/VuetifyComp')
+    },
     ...categories,
 
 

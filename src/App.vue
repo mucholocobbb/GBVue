@@ -34,6 +34,12 @@ export default {
         id: 2,
         show: true,
         msg: 'Where you money?!'
+      },
+        {
+        name: 'Vuetify',
+        id: 3,
+        show: false,
+        msg: 'Where you brain?!'
       }
       ]
     }

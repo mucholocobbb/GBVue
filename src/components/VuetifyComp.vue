@@ -2,7 +2,13 @@
     <div class="mainitem__style">
         <h1>{{ $route.params.message }}</h1>
     <v-app class="vuetify">
-        <v-app-bar class="header">v-app-bar</v-app-bar>
+        <v-app-bar class="header">
+            <v-img
+                class="logo"
+                alt="Vue Logo"
+                src="/favicon.ico"
+            />
+        </v-app-bar>
         <v-system-bar>v-system-var</v-system-bar>
         <v-main>
              <v-btn>Home</v-btn>
@@ -26,8 +32,11 @@ export default {
         margin-top: 34px
     .v-application--wrap
         width: 100%
+        min-height: 100% !important
     .v-toolbar
         flex: none !important
+    .v-image__image--cover    
+        background-size: unset !important
     // .header
     //     display: flex
     //     justify-content: center

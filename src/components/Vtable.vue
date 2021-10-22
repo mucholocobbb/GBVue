@@ -1,33 +1,29 @@
 <template>
-  <div class="money__listblock">
-    <div class="money__listheader">
-      <p class="money__categories">#</p>
-      <p class="money__categories">Date</p>
-      <p class="money__categories">Category</p>
-      <p class="money__categories">Value</p>
-    </div>
+  <transition name="fade">
+    <div class="vuetify__listblock">
+      <v-row class="vuetify__listheader">
+        <v-col class="vuetify__categories">#</v-col>
+        <v-col class="vuetify__categories">Date</v-col>
+        <v-col class="vuetify__categories">Category</v-col>
+        <v-col class="vuetify__categories">Value</v-col>
+      </v-row>
 
-    <div
-      class="money__listheader money__listheader_item"
-      v-for="item in setArrRange"
-      :key="item.id"
-    >
-      <transition name="fade">
-        <ModalWindow
-          class="money__modalwindow"
-          v-if="activeId === item.id"
-          :elem="item"
-        />
-      </transition>
-      <p class="money__categories">{{ item.id }}</p>
-      <p class="money__categories">{{ item.date }}</p>
-      <p class="money__categories">{{ item.cat }}</p>
-      <p class="money__categories">{{ item.value }} &#8381;</p>
-      <button class="money__modallist money__categories" @click="$modal.show(item.id)">
-        <i class="fas fa-bars"></i>
-      </button>
+      <v-row
+        class="vuetify__listheader vuetify__listheader_item"
+        v-for="item in setArrRange"
+        :key="item.id"
+      >
+        <v-col class="vuetify__categories">{{ item.id }}</v-col>
+        <v-col class="vuetify__categories">{{ item.date }}</v-col>
+        <v-col class="vuetify__categories">{{ item.cat }}</v-col>
+        <v-col class="vuetify__categories">{{ item.value }} &#8381;</v-col>
+        <button
+          class="vuetify__modallist vuetify__categories"
+          @click="$modal.show(item.id)"
+        ></button>
+      </v-row>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -39,9 +35,6 @@ export default {
     return {
       activeId: "",
     };
-  },
-  components: {
-    ModalWindow: () => import("./ModalWindow.vue"),
   },
   methods: {
     onShown(id) {
@@ -61,10 +54,6 @@ export default {
       return this.getCostList.slice(startNum, lastNum);
     },
   },
-  mounted() {
-    this.$modal.EventBus.$on("shown", this.onShown);
-    this.$modal.EventBus.$on("hide", this.onHide);
-  },
 };
 </script>
 
@@ -74,8 +63,9 @@ export default {
     transition: opacity .3s
 .fade-enter, .fade-leave-to
     opacity: 0
-.money
-
+.col
+    padding: 0 !important
+.vuetify
     &__modallist
         background: white
         outline: none
@@ -92,8 +82,8 @@ export default {
         font-size: 14px
         font-weight: 800
         border-bottom: 1px solid black
-        width: 450px
-        margin: 0 auto
+        width: 400px
+        margin: 0 auto !important
         display: grid
         grid-template-columns: 1fr 3fr 3fr 2fr 1fr
         margin-bottom: 16px
@@ -107,6 +97,4 @@ export default {
         margin-block-start: 12px
         margin-block-end: 12px
         text-align: center
-    &__modalwindow
-        position: absolute
 </style>

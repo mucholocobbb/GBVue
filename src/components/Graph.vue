@@ -34,6 +34,7 @@ export default {
         };
         arrCat.push(arrItem);
         this.$store.commit("pushToDiagram", arrItem);
+        console.log(arrCat);
       });
       return arrCat;
     },

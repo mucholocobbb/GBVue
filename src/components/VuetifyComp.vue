@@ -15,7 +15,17 @@
         <vue-table />
         <pagination />
         <p>________________</p>
-        <!-- <graph /> -->
+        <v-dialog>
+          <template v-slot:activator="{ on }">
+            <v-btn color="teal" dark v-on="on">
+              ADD NEW COST <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <add-form-for-vuetify />
+          </v-card>
+        </v-dialog>
+        <graph />
       </v-main>
       <v-bottom-navigation>
         <v-btn color="gray">It is Button</v-btn>
@@ -28,13 +38,15 @@
 <script>
 import VueTable from "./Vtable.vue";
 import Pagination from "./money/Pagination.vue";
-// import Graph from "./Graph.vue";
+import AddFormForVuetify from "./AddFormForVuetify.vue";
+import Graph from "./Graph.vue";
 
 export default {
   components: {
     VueTable,
     Pagination,
-    // Graph,
+    AddFormForVuetify,
+    Graph,
   },
 };
 </script>
@@ -68,4 +80,6 @@ export default {
         justify-content: space-around
     .v-footer
         font-size: 10px
+    .v-dialog
+        width: 500px
 </style>

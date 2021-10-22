@@ -11,6 +11,53 @@ const state = {
     lastPage: 1,
     showForm: false,
     showSymbol: '+',
+    diagramSet: {
+        chart: {
+            type: "column",
+        },
+        title: {
+            text: "Ваши траты за 2021 год.",
+        },
+        subtitle: {
+            text: "Здесь вы можете наглядно увидеть свои расходы",
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true,
+            },
+        },
+        xAxis: {
+            type: "category",
+        },
+        yAxis: {
+            title: {
+                text: "Итоговые траты в %",
+            },
+        },
+        legend: {
+            enabled: false,
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: "{point.y:.1f}%",
+                },
+            },
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>',
+        },
+
+        series: [{
+            name: "Categories",
+            colorByPoint: true,
+            data: [],
+        }, ],
+    },
 }
 
 const getters = {
@@ -21,6 +68,7 @@ const getters = {
     lastPage: state => state.lastPage,
     getShowForm: state => state.showForm,
     getShowSymbol: state => state.showSymbol,
+    getDiaSet: state => state.diagramSet
 }
 
 const mutations = {
@@ -84,6 +132,11 @@ const mutations = {
         state.lastPage = info
     },
 
+    //Diagramm
+    pushToDiagram(state, item) {
+        state.diagramSet.series[0].data.push(item)
+    },
+
     //--------
     openForm() {
         state.showForm = !state.showForm
@@ -101,7 +154,7 @@ const mutations = {
         // }, 1);
 
         // Скорее всего понадобиться добавить смену символа
-        if(flag !== undefined) {
+        if (flag !== undefined) {
             state.showForm = flag
         } else {
             state.showForm = !state.showForm

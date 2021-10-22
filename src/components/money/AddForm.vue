@@ -1,104 +1,124 @@
 <template>
-    <div class="money__addform" >
-        <SetCategory v-if="hiddenAddBlock"/>
-        <form class="money__addform_form" action="#" @submit.prevent>
-            <div class="money__addform_item">
-                <label class="money__addform_labels" for="date">When?</label>
-                <input class="money__addform_inputs" type="date" name="date" id="date" v-model="dateInp" >
-            </div>
-            <div class="money__addform_item">
-                <label class="money__addform_labels" for="cat"> What?</label>
-                <select class="money__addform_inputs money__addform_select" name="cat" id="cat" v-model="selected"  required>
-                <option v-for="option in getCatList" :key="option.id"  :value="option.text">{{ option.text }}</option>
-                </select>
-                <button class="money__addform_setbtn" @click.prevent="hiddenAddBlock = !hiddenAddBlock"><i class="fas fa-cog"></i></button>
-            </div>
-            <div class="money__addform_item">
-                <label class="money__addform_labels" for="price"> How much?</label>
-                <input class="money__addform_inputs" type="number" id="price" v-model="price"  placeholder="Rub." required>
-            </div>
+  <div class="money__addform">
+    <SetCategory v-if="hiddenAddBlock" />
+    <form class="money__addform_form" action="#" @submit.prevent>
+      <div class="money__addform_item">
+        <label class="money__addform_labels" for="date">When?</label>
+        <input
+          class="money__addform_inputs"
+          type="date"
+          name="date"
+          id="date"
+          v-model="dateInp"
+        />
+      </div>
+      <div class="money__addform_item">
+        <label class="money__addform_labels" for="cat"> What?</label>
+        <select
+          class="money__addform_inputs money__addform_select"
+          name="cat"
+          id="cat"
+          v-model="selected"
+          required
+        >
+          <option v-for="option in getCatList" :key="option.id" :value="option.text">
+            {{ option.text }}
+          </option>
+        </select>
+        <button
+          class="money__addform_setbtn"
+          @click.prevent="hiddenAddBlock = !hiddenAddBlock"
+        >
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+      <div class="money__addform_item">
+        <label class="money__addform_labels" for="price"> How much?</label>
+        <input
+          class="money__addform_inputs"
+          type="number"
+          id="price"
+          v-model="price"
+          placeholder="Rub."
+          required
+        />
+      </div>
 
-            <button class="money__addform_btn" @submit.prevent  @click="addItem">ADD +</button>
-        </form>
-    </div>
+      <button class="money__addform_btn" @submit.prevent @click="addItem">ADD +</button>
+    </form>
+  </div>
 </template>
 
 <script>
-import SetCategory from "./SetCategory.vue"
+import SetCategory from "./SetCategory.vue";
 
-import {mapMutations,mapGetters} from "vuex"
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
-    name: "AddForm",
-    components: {
-        SetCategory
+  name: "AddForm",
+  components: {
+    SetCategory,
+  },
+  data() {
+    return {
+      hiddenAddBlock: false,
+      dateInp: "",
+      selected: "",
+      price: "",
+    };
+  },
+  methods: {
+    ...mapMutations(["setAddCostItem", "updateCostId", "actualPageChange"]),
+
+    addItem() {
+      let newString = this.replaceDate();
+      if (this.selected !== "" && this.price !== "") {
+        this.sendToParent(newString);
+      }
     },
-    data() {
-        return {
-            hiddenAddBlock: false,
-            dateInp: '',
-            selected: '',
-            price: '',
-        }
+    sendToParent(newDate) {
+      let newItem = {
+        id: "",
+        date: newDate || this.getCurrentDate,
+        cat: this.selected,
+        value: this.price,
+      };
+      this.$store.commit("setAddCostItem", newItem);
+      this.$store.commit("updateCostId");
+      this.$store.commit("actualPageChange", this.lastPage);
     },
-    methods: {
-        ...mapMutations(['setAddCostItem','updateCostId','actualPageChange']),
-
-        addItem() {
-            let newString =  this.replaceDate()
-            if ( this.selected !== '' && this.price !== '') {
-                this.sendToParent(newString)
-            }
-        },
-        sendToParent(newDate){
-            let newItem = {
-                id: '',
-                date: newDate || this.getCurrentDate,
-                cat: this.selected,
-                value: this.price
-            }
-            this.$store.commit('setAddCostItem',newItem)
-            this.$store.commit('updateCostId')
-            this.$store.commit('actualPageChange',this.lastPage)
-           
-        },
-        replaceDate() {
-            let re = /-/gi
-            let newStr = this.dateInp.replace(re, '.')
-            let re2 = /(\d+).(\d+).(\d+)/gi
-            let newStr2 = newStr.replace(re2, '$3.$2.$1')
-            return newStr2
-        },
-
+    replaceDate() {
+      let re = /-/gi;
+      let newStr = this.dateInp.replace(re, ".");
+      let re2 = /(\d+).(\d+).(\d+)/gi;
+      let newStr2 = newStr.replace(re2, "$3.$2.$1");
+      return newStr2;
     },
-    computed: {
-        ...mapGetters(['getCatList','lastPage']),
-        getCurrentDate () {
-            const today = new Date()
-            const d = today.getDate()
-            const m = today.getMonth() + 1
-            const y = today.getFullYear()
-            return `${d}.${m}.${y}`
-        },    
-        routName() {
-            return this.$route.name
-        },
-        routVal() {
-            return this.$route.params.value
-        }
-
-
+  },
+  computed: {
+    ...mapGetters(["getCatList", "lastPage"]),
+    getCurrentDate() {
+      const today = new Date();
+      const d = today.getDate();
+      const m = today.getMonth() + 1;
+      const y = today.getFullYear();
+      return `${d}.${m}.${y}`;
     },
-
-    created() {
-        setTimeout(() => {
-            this.selected = this.routName
-            this.price = this.$route.params.value
-        }, 1);
+    routName() {
+      return this.$route.name;
     },
+    routVal() {
+      return this.$route.params.value;
+    },
+  },
 
-    
-}
+  created() {
+    setTimeout(() => {
+      this.selected = this.routName;
+      this.price = this.$route.params.value;
+    }, 1);
+  },
+};
 </script>
 
 <style lang="sass">
@@ -120,7 +140,7 @@ export default {
             margin-block-end: 4px
         &_itemblock
             display: flex
-            justify-content: space-between    
+            justify-content: space-between
             height: 24px
             padding: 4px
             transition: all 0.2s
@@ -136,6 +156,8 @@ export default {
             color: #f4004dad
             border-radius: 5px
             transition: all 0.2s
+            width: 22px
+            height: 22px
             &:hover
                 background: #f651518a
                 color: white
@@ -147,10 +169,10 @@ export default {
             background: white
             border: 1px solid #41b883
             border-radius: 5px
-            margin: 0 4px
             padding: 0 4px
             outline: none
             color: gray
+            height: 22px
             &:focus
                 background: #61e3a947
         &_itemaddbtn
@@ -198,7 +220,7 @@ export default {
         &_select
             width: 222px
 
- 
+
         &_labels
             color: #41b883
             align-self: flex-start
@@ -216,8 +238,7 @@ export default {
             background: #61e3a9
             transition: all 0.4s
             &:hover
-                background: #41b883a6      
+                background: #41b883a6
             &:active
-                transform: scale(0.96)          
-
+                transform: scale(0.96)
 </style>

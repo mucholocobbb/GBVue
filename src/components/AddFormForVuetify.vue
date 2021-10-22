@@ -1,6 +1,5 @@
 <template>
   <div class="vuetifyform">
-    <SetCategory v-if="hiddenAddBlock" />
     <v-card>
       <v-text-field label="Date" name="date" id="date" v-model="dateInp" />
       <v-select :items="getCatList" v-model="selected" label="Category" />
@@ -11,18 +10,13 @@
 </template>
 
 <script>
-import SetCategory from "./money/SetCategory.vue";
-
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "AddForm",
-  components: {
-    SetCategory,
-  },
+
   data() {
     return {
-      hiddenAddBlock: false,
       dateInp: "",
       selected: "",
       price: "",
@@ -30,9 +24,6 @@ export default {
   },
   methods: {
     ...mapMutations(["setAddCostItem", "updateCostId", "actualPageChange"]),
-    changeOpenForm() {
-      this.hiddenAddBlock = !this.hiddenAddBlock;
-    },
     addItem() {
       let newString = this.replaceDate();
       if (this.selected !== "" && this.price !== "") {
@@ -49,7 +40,6 @@ export default {
       this.$store.commit("setAddCostItem", newItem);
       this.$store.commit("updateCostId");
       this.$store.commit("actualPageChange", this.lastPage);
-      this.$store.commit("pushToDiagram", {});
     },
     replaceDate() {
       let re = /-/gi;
@@ -68,19 +58,6 @@ export default {
       const y = today.getFullYear();
       return `${d}.${m}.${y}`;
     },
-    routName() {
-      return this.$route.name;
-    },
-    routVal() {
-      return this.$route.params.value;
-    },
-  },
-
-  created() {
-    setTimeout(() => {
-      this.selected = this.routName;
-      this.price = this.$route.params.value;
-    }, 1);
   },
 };
 </script>

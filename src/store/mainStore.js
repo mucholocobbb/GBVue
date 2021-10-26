@@ -11,6 +11,7 @@ const state = {
     lastPage: 1,
     showForm: false,
     showSymbol: '+',
+    diagramReopen: false,
     diagramSet: {
         chart: {
             type: "column",
